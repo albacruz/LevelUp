@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>Mitgliedschaft</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -31,11 +31,11 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
@@ -56,11 +56,11 @@
 		          <li><a href="neuerKurs.php">Neuer Kurs</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mitgliedschaft
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li><a href="mitgliedschaft.php">Mitgliedschaft</a></li>
+		          <li class="active"><a href="#">Mitgliedschaft</a></li>
 		          <li><a href="linkKundeMit.php" >Neue Mitgliedschaft</a></li>
 		        </ul>
 		      </li>
@@ -86,29 +86,24 @@
 		</nav>
 		
 		<div class="container">
-			<h1>Kunde</h1> <hr>
+			<h1>Mitgliedschaft</h1> <hr>
 			<table style="width:100%">
 				<tr>
 					<th>&nbsp;id</th>
+					<th>&nbsp;Kunde id</th>
 					<th>&nbsp;Anrede</th>
 					<th>&nbsp;Name</th>
 					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
+					<th>&nbsp;Beitritt</th>
+					<th>&nbsp;Austritt</th>
+					<th>&nbsp;Zahlungsart</th>
 					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
 				</tr>
 				
 				<?php 
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
+					$SQL = "select mitgliedschaft.id, kunde.id as kunde_id, kunde.anrede, kunde.name, kunde.vorname, mitgliedschaft.beitritt, mitgliedschaft.austritt, mitgliedschaft.zahlungsart from kunde join mitgliedschaft on kunde.id = mitgliedschaft.kunde_id order by mitgliedschaft.id";
+
 					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
 
 					while($mostrar = mysqli_fetch_array($Resultado)){
@@ -120,23 +115,16 @@
 				<tr>
 					
 					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['kunde_id'] ?></td>
 					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
 					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
 					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['beitritt'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['austritt'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['zahlungsart'] ?></td>
+					
 					<td>
 						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
-
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
 					</td>
 				</tr>
 
@@ -147,7 +135,7 @@
 
 			<br><br>
 
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
+			<a href="linkKundeMit.php" class="btn btn" role="button" id="nuevo">Neue Mitgliedschaft</a>
 		</div>	
 
 		

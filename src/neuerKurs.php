@@ -1,12 +1,7 @@
-<meta charset="UTF8">
-<?php 
-	include "connect.php";
- ?>
-
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>Neuer Kurs</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -22,7 +17,6 @@
     </head>
     <body>
 
-		
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
@@ -31,12 +25,12 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
-		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
+		          <li class="active"><a href="#" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
 		      <li class="dropdown">
@@ -48,12 +42,12 @@
 		        </ul>
 		      </li>
 		      <li><a href="showAdresse.php">Adresse</a></li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kurs
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
 		          <li><a href="kurs.php">Kurs</a></li>
-		          <li><a href="neuerKurs.php">Neuer Kurs</a></li>
+		          <li class="active"><a href="#">Neuer Kurs</a></li>
 		        </ul>
 		      </li>
 		      <li class="dropdown">
@@ -84,74 +78,66 @@
 		    </ul>
 		  </div>
 		</nav>
+
+    	<form action="kursForm.php" method="post">
 		
-		<div class="container">
-			<h1>Kunde</h1> <hr>
-			<table style="width:100%">
-				<tr>
-					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
-					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
-				</tr>
-				
-				<?php 
+			<div class="container">
+				<h1>Neuer Kurs</h1> <hr>
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
-					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+				<div class="form-group">
+					<label for="kursTyp">Typ * :</label>
+				    <select class="form-control" id="kursTyp" name ="Typ" required="true">
+				      	<option></option>
+				        <option>Beckenbodengymnastik</option>
+				        <option>Circel Training</option>
+				        <option>Gewichtsreduktion</option>
+				        <option>Herz-Kreislauf</option>
+				        <option>Indoor-Cycling</option>
+				        <option>Koronarsport</option>
+				        <option>Pilates</option>
+				        <option>Rückengymnastik</option>
+				        <option>Step</option>
+				        <option>Yoga</option>
+				        <option>Zumba</option>
+				      </select>
+				</div>
 
-					while($mostrar = mysqli_fetch_array($Resultado)){
+			    <div class="form-group" >
+					<label for="kursbeginn">Beginn * :</label><br>
+					<input class="date form-control" type="date" id ="kursbeginn" required="true" name ="Beginn">
+							
+				</div>
 
+				<br>
 
-				 ?>
+				<div class="form-group" >
+					<label for="kursende">Ende * :</label><br>
+					<input class="date form-control" type="date" id ="kursende" required="true" name ="Ende">
+							
+				</div>
 
+			    <div class="form-group" >
+			      <label for="kursraum">Raum:</label>
+			      <input type="text" class="form-control" id="kursraum" name ="Raum">
+			    </div>
 
-				<tr>
-					
-					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
-					<td>
-						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
+				<div class="form-group" for="formulario">
+					<label for="kursanz">Terminanzahl:</label>
+					<input class="form-control" type="number" step="any" id="kursanz" name ="Terminanzahl">
+									
+				</div>
 
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+				<br>
 
-					</td>
-				</tr>
+				<input type="submit" class="btn btn" value="Enviar" id="nuevo"> &nbsp;
+				<a href="kurs.php" class="btn btn" id="nuevo">Cancelar</a>
+			</div>
 
-				<?php 
-					}
-				 ?>
-			</table>
+			
+				<!--<a class="btn btn-primary" href="adresse.php" id="nuevo">add Adresse</a>-->
+		</form>
 
-			<br><br>
-
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
-		</div>	
-
-		
-				
+	
 
 	    
 	    <footer class="container-fluid text-center">

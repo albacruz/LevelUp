@@ -1,12 +1,15 @@
 <meta charset="UTF8">
-<?php 
+
+<?php
 	include "connect.php";
- ?>
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <title>Kunde</title>
+<head>
+	<title>Neuer Kunde</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -19,11 +22,54 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/myscript.js"></script>
-    </head>
-    <body>
+</head>
+<body>
 
+
+	<?php 
+
+		if($Conexion_MySQL){
+
+
+			$table = "kunde";
+			$Anrede = $_REQUEST["Anrede"];
+			$Name 	= $_REQUEST["Name"];
+			$Vorname = $_REQUEST["Vorname"];
+			$Geburtsdatum = $_REQUEST["Geburtsdatum"];
+			$Email = $_REQUEST["Email"];
+			$Telefon = $_REQUEST["Telefon"];
+			$Notiz = $_REQUEST["Notiz"];
 		
-		<nav class="navbar navbar-default">
+			$SQL = "insert into Kunde ";
+			$SQL .= " (id, Anrede, Name, Vorname, Geburtsdatum, Email, Telefon, Notiz) ";
+			$SQL .= "select MAX(id)+1, '$Anrede', '$Name', '$Vorname',' $Geburtsdatum', '$Email', '$Telefon', '$Notiz'";
+			$SQL .= "FROM Kunde";
+
+
+
+		if(!mysqli_query($Conexion_MySQL, $SQL))
+			echo "Error: " .mysqli_error($Conexion_MySQL);
+		else
+			echo "";
+
+
+	}
+
+	else{
+		die("Error al conectar con la base de datos");
+	}
+
+
+	mysqli_close($Conexion_MySQL);
+
+
+	 ?>
+	
+
+
+
+
+	<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		    	<a class="navbar-brand" href="#">LevelUp</a>
@@ -35,8 +81,8 @@
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
-		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
+		          <li class="active"><a href="#" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
 		      <li class="dropdown">
@@ -84,80 +130,63 @@
 		    </ul>
 		  </div>
 		</nav>
-		
-		<div class="container">
-			<h1>Kunde</h1> <hr>
-			<table style="width:100%">
-				<tr>
-					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
-					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
-				</tr>
+	
+
+			<div class="container">
+				<h2>Cliente creado correctamente</h2>
+			</div>
+			
+
+			<div id="actions2">
+				<div class="container">
+
+					<div>
+						<button type="button" class="btn btn" class="option" id="nuevo" onclick="myFunction2()">Add Adresse</button>
+						<a href="kunde.php" class="btn btn" id="nuevo">Finalizar</a>
+					</div>
+				</div>
 				
-				<?php 
+			</div>
+			
+			<div id="actions" style="display: none">
+				<form action="adresse.php?table=<?php echo $table; ?>" id ="myForm" method="post" onsubmit="return validate()">
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
-					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+					<div class="container">
+						<div class="form-group">
+						     <label for="usrstr">Stra&szlig;e * :</label>
+						     <input type="text" class="form-control" id="usrstr" name ="strasse" required="true">
+						</div>
 
-					while($mostrar = mysqli_fetch_array($Resultado)){
+						<div class="form-group">
+							     <label for="usrhnum">Hausnummer * :</label>
+							     <input type="text" class="form-control" id="usrhnum" name ="Hausnum" required="true">
+						</div>
 
+						<div class="form-group" for="formulario">
+							<label for="usrpost">Postleitzahl *:</label>
+							<input class="form-control" type="number" step="any" id="usrpost" name ="Postleitzahl" required="true">
+									
+						</div>
 
-				 ?>
+						<div class="form-group">
+						     <label for="usrort">Ort * :</label>
+						     <input type="text" class="form-control" id="usrort" name ="Ort" required="true">
+						</div>
 
-
-				<tr>
+						<input type="submit" class="btn btn" value="Add Adresse" id="nuevo" > &nbsp;
+						<a href="kunde.php" class="btn btn" id="nuevo">No crear Adresse</a>
 					
-					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
-					<td>
-						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
+					</div>
 
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
-					</td>
-				</tr>
-
-				<?php 
-					}
-				 ?>
-			</table>
-
-			<br><br>
-
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
-		</div>	
-
-		
 				
+				</form>
+				
+			</div>
 
-	    
-	    <footer class="container-fluid text-center">
+			
+			<footer class="container-fluid text-center">
 		  <p> Política de privacidad &nbsp; © 2018 LevelUp Firma </p>
 		</footer>
-    </body>
+		
+	</body>
 </html>
-
-

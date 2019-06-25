@@ -1,12 +1,7 @@
-<meta charset="UTF8">
-<?php 
-	include "connect.php";
- ?>
-
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>neuer Angestellter</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -22,7 +17,6 @@
     </head>
     <body>
 
-		
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
@@ -31,20 +25,20 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Angestellter
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
 		          <li><a href="angestellter.php">Angestellter</a></li>
-		          <li><a href="neuerAngestellter.php" >Neuer Angestellter</a></li>
+		          <li class="active"><a href="#" >Neuer Angestellter</a></li>
 		        </ul>
 		      </li>
 		      <li><a href="showAdresse.php">Adresse</a></li>
@@ -84,74 +78,86 @@
 		    </ul>
 		  </div>
 		</nav>
+
+    	<form action="angestellterForm.php" method="post">
 		
-		<div class="container">
-			<h1>Kunde</h1> <hr>
-			<table style="width:100%">
-				<tr>
-					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
-					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
-				</tr>
-				
-				<?php 
+			<div class="container">
+				<h1>neuer Angestellter</h1> <hr>
+				<div class="form-group">
+					<label for="sel1">Anrede * :</label>
+				    <select class="form-control" id="sel1" name ="Anrede" required="true">
+				      	<option></option>
+				        <option>Frau</option>
+				        <option>Herr</option>
+				      </select>
+				</div>
+			
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
-					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+				<div class="form-group">
+			      <label for="usrname">Name * :</label>
+			      <input type="text" class="form-control" id="usrname" name ="Name" required="true">
+			    </div>
 
-					while($mostrar = mysqli_fetch_array($Resultado)){
+			    <div class="form-group">
+			      <label for="usrvorname">Vorname * :</label>
+			      <input type="text" class="form-control" id="usrvorname" name ="Vorname" required="true">
+			    </div>
 
+				<div class="form-group">
+					<label for="usrdate">Geburtsdatum * :</label><br>
+					<input class="date form-control" type="date" id ="usrdate" required="true" name ="Geburtsdatum">
+							
+				</div>
+				<br>
 
-				 ?>
+				<div class="form-group">
+				    <label for="usremail1">Email:</label>
+				    <input type="email" class="form-control" id="usremail" aria-describedby="emailHelp" name ="Email">
+				    <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+				</div>
 
-
-				<tr>
+				<div class="form-group">
+					<label for="usrnum">Telefonnummer:</label>
+					<input class="form-control" type="tel" id="usrnum" name ="Telefon">
 					
-					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
-					<td>
-						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
+				</div>
 
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+				<div class="form-group">
+					<label for="usrlohn">Stundenlohn:</label>
+					<input class="form-control" type="number" step="any" id="usrlohn" value="NULL" name ="Stundenlohn">
+					
+				</div>
 
-					</td>
-				</tr>
+				<div class="form-group">
+					<label for="usrarbeitszeit">Wochenarbeitszeit:</label>
+					<input class="form-control" type="number" step="any" id="usrarbeitszeit" value="NULL" name ="Wochenarbeitszeit">
+					
+				</div>
 
-				<?php 
-					}
-				 ?>
-			</table>
+				<!--<input type="number" name="quantity" min="1" max="5">-->
 
-			<br><br>
+				<div class="form-group">
+					<label for="usreinstdate">Einstellungsdatum :</label><br>
+					<input class="date form-control" type="date"  id ="usreinstdate" name ="Einstellungsdatum">
+							
+				</div>
+				<br>
 
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
-		</div>	
+				<div class="form-group">
+					<label for="Notiz">Notiz:</label>
+					<textarea class="form-control" rows="5" id="notiz" name ="Notiz"></textarea>
+				</div>
 
-		
-				
+				<br>
+
+				<input type="submit" class="btn btn" value="Enviar" id="nuevo"> &nbsp;
+				<a href="angestellter.php" class="btn btn" id="nuevo">Cancelar</a>
+				<!--<a class="btn btn-primary" href="adresse.php" id="nuevo">add Adresse</a>-->
+
+			</div>
+		</form>
+
+	
 
 	    
 	    <footer class="container-fluid text-center">

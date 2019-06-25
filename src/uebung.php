@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>&#220;bung</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -31,11 +31,11 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
@@ -73,11 +73,11 @@
 		          <li><a href="vertragKurs.php" >Kurs</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">&#220;bung
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li><a href="uebung.php">&#220;bung</a></li>
+		          <li class="active"><a href="#">&#220;bung</a></li>
 		          <li><a href="neueUebung.php" >Neue &#220;bung</a></li>
 		        </ul>
 		      </li>
@@ -86,29 +86,30 @@
 		</nav>
 		
 		<div class="container">
-			<h1>Kunde</h1> <hr>
+			<h1>&#220;bung</h1> <hr>
 			<table style="width:100%">
 				<tr>
 					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
+					<th>&nbsp;Beschreibung</th>
+					<th>&nbsp;Datum</th>
+					<th>&nbsp;Gewicht</th>
+					<th>&nbsp;Anzahl</th>
+					<th>&nbsp;Wiederholung</th>
+					<th>&nbsp;Kunde Name</th>
+					<th>&nbsp;Fitnessger&#228;t_typ</th>
 					<th>&nbsp;Editar</th>
 					<th>&nbsp;Eliminar</th>
 				</tr>
 				
 				<?php 
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
+					$SQL = "select Uebung.id, Uebung.beschreibung, Uebung.datum, Uebung.gewicht, Uebung.wiederholung, Kunde.name as kunde_name, Fitnessgeraet.typ 
+FROM UEBUNG 
+JOIN BASISTRAINING ON UEBUNG.basistraining_id = BASISTRAINING.id 
+Join VERTRAG ON BASISTRAINING.id = VERTRAG.basistraining_id 
+JOIN MITGLIEDSCHAFT ON VERTRAG.mitgliedschaft_id = MITGLIEDSCHAFT.id 
+JOIN KUNDE ON MITGLIEDSCHAFT.kunde_id = KUNDE.id 
+Join Fitnessgeraet ON UEBUNG.Fitnessgeraet_id = Fitnessgeraet.id;";					
 					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
 
 					while($mostrar = mysqli_fetch_array($Resultado)){
@@ -120,22 +121,19 @@
 				<tr>
 					
 					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['beschreibung'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['datum'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['gewicht'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['anzahl'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['wiederholung'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['kunde_name'] ?></td>
+					<td>&nbsp;<?php echo $mostrar['typ'] ?></td>
 					<td>
 						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
 					</td>
 
 					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+						<a class="btn btn" href="borrarUebung.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 
 					</td>
 				</tr>
@@ -147,7 +145,7 @@
 
 			<br><br>
 
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
+			<a href="neueUebung.php" class="btn btn" role="button" id="nuevo">Neue &#220;bung</a>
 		</div>	
 
 		

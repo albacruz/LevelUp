@@ -1,12 +1,15 @@
 <meta charset="UTF8">
-<?php 
+
+<?php
 	include "connect.php";
- ?>
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <title>Kunde</title>
+	<head>
+		<title>Neuer Vertrag</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -19,11 +22,10 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/myscript.js"></script>
-    </head>
-    <body>
+	</head>
+	<body>
 
-		
-		<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		    	<a class="navbar-brand" href="#">LevelUp</a>
@@ -31,11 +33,11 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
@@ -53,7 +55,7 @@
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
 		          <li><a href="kurs.php">Kurs</a></li>
-		          <li><a href="neuerKurs.php">Neuer Kurs</a></li>
+		          <li><a href="#">Neuer Kurs</a></li>
 		        </ul>
 		      </li>
 		      <li class="dropdown">
@@ -64,7 +66,7 @@
 		          <li><a href="linkKundeMit.php" >Neue Mitgliedschaft</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Vertrag
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
@@ -84,80 +86,59 @@
 		    </ul>
 		  </div>
 		</nav>
-		
-		<div class="container">
-			<h1>Kunde</h1> <hr>
-			<table style="width:100%">
-				<tr>
-					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
-					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
-				</tr>
-				
-				<?php 
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
-					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+				<div class="container">
+					<h2>Choose Kunde</h2> <hr>
+						<table style="width:50%">
+							<tr>
+								<th>&nbsp;Mitgliedschaft_id</th>
+								<th>&nbsp;Kunde_id</th>
+								<th>&nbsp;Anrede</th>
+								<th>&nbsp;Name</th>
+								<th>&nbsp;Vorname</th>
+								<th>&nbsp;Notiz</th>
+								<th>&nbsp;Seleccionar</th>
+							</tr>
+							
+							<?php 
+								$table = $_GET['table'];
 
-					while($mostrar = mysqli_fetch_array($Resultado)){
+								if(!empty($table)){
+
+									$SQL = "select mitgliedschaft.id as mit_id, kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.notiz from kunde join mitgliedschaft on kunde.id = mitgliedschaft.kunde_id where mitgliedschaft.austritt IS null";
+
+									$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+
+									while($mostrar = mysqli_fetch_array($Resultado)){
 
 
-				 ?>
+							 ?>
+							<tr>
+								
+								<td>&nbsp;<?php echo $mostrar['mit_id']?></td>
+								<td>&nbsp;<?php echo $mostrar['id']?></td>
+								<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
+								<td>&nbsp;<?php echo $mostrar['name'] ?></td>
+								<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
+								<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
 
 
-				<tr>
+								<td>
+									<a class="btn btn" href="vertragForm.php?table=<?php echo $table;?>&mit_id=<?php echo $mostrar['mit_id'];?>"><i class="fa fa-circle-o" aria-hidden="true"></i></a>
+
+								</td>
+							</tr>
+
+							<?php 
+									}
+								}
+							 ?>
+						</table>
+						
+						<br>
+						<a href="vertrag<?php echo $table;?>.php" class="btn btn" id="nuevo">Cancelar</a>
 					
-					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
-					<td>
-						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
+					</div>
 
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
-					</td>
-				</tr>
-
-				<?php 
-					}
-				 ?>
-			</table>
-
-			<br><br>
-
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
-		</div>	
-
-		
-				
-
-	    
-	    <footer class="container-fluid text-center">
-		  <p> Política de privacidad &nbsp; © 2018 LevelUp Firma </p>
-		</footer>
-    </body>
+</body>
 </html>
-
-

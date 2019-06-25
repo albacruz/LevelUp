@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>Angestellter</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -22,7 +22,6 @@
     </head>
     <body>
 
-		
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
@@ -31,19 +30,19 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Angestellter
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li><a href="angestellter.php">Angestellter</a></li>
+		          <li class="active"><a href="#">Angestellter</a></li>
 		          <li><a href="neuerAngestellter.php" >Neuer Angestellter</a></li>
 		        </ul>
 		      </li>
@@ -81,12 +80,14 @@
 		          <li><a href="neueUebung.php" >Neue &#220;bung</a></li>
 		        </ul>
 		      </li>
+		      <li><a href="#">Page 2</a></li>
+		      <li><a href="#">Page 3</a></li>
 		    </ul>
 		  </div>
 		</nav>
 		
 		<div class="container">
-			<h1>Kunde</h1> <hr>
+			<h1>Angestellter</h1> <hr>
 			<table style="width:100%">
 				<tr>
 					<th>&nbsp;id</th>
@@ -106,17 +107,13 @@
 				
 				<?php 
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
+					$SQL = "select angestellter.id, angestellter.anrede, angestellter.name, angestellter.vorname, angestellter.geburtsdatum, angestellter.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, angestellter.email, angestellter.notiz from angestellter left join angestellter_adresse on angestellter.id = angestellter_adresse.angestellter_id left join adresse on angestellter_adresse.adresse_id = adresse.id";
 					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
 
 					while($mostrar = mysqli_fetch_array($Resultado)){
 
 
 				 ?>
-
-
 				<tr>
 					
 					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
@@ -130,12 +127,14 @@
 					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
 					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
 					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
+
 					<td>
+
 						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
 					</td>
 
 					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+						<a class="btn btn" href="borrarAngestellter.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 
 					</td>
 				</tr>
@@ -147,7 +146,7 @@
 
 			<br><br>
 
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
+			<a href="neuerAngestellter.php" class="btn btn" role="button" id="nuevo">Neuer Angestellter</a>
 		</div>	
 
 		

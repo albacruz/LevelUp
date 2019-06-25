@@ -1,12 +1,14 @@
-<meta charset="UTF8">
 <?php 
-	include "connect.php";
- ?>
+
+	include "connect.php"
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <title>Kunde</title>
+        <title>Neue Mitgliedschaft</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -22,7 +24,6 @@
     </head>
     <body>
 
-		
 		<nav class="navbar navbar-default">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
@@ -31,11 +32,11 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 		      <li><a href="home.php">Home</a></li>
-		      <li class="dropdown active">
+		      <li class="dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Kunde
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
-		          <li class="active"><a href="#">Kunde</a></li>
+		          <li><a href="kunde.php">Kunde</a></li>
 		          <li><a href="neuerKunde.php" >Neuer Kunde</a></li>
 		        </ul>
 		      </li>
@@ -56,12 +57,12 @@
 		          <li><a href="neuerKurs.php">Neuer Kurs</a></li>
 		        </ul>
 		      </li>
-		      <li class="dropdown">
+		      <li class="dropdown active">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mitgliedschaft
 		        <span class="caret"></span></a>
 		        <ul class="dropdown-menu">
 		          <li><a href="mitgliedschaft.php">Mitgliedschaft</a></li>
-		          <li><a href="linkKundeMit.php" >Neue Mitgliedschaft</a></li>
+		          <li class="active"><a href="#" >Neue Mitgliedschaft</a></li>
 		        </ul>
 		      </li>
 		      <li class="dropdown">
@@ -84,74 +85,65 @@
 		    </ul>
 		  </div>
 		</nav>
+
+		<?php 
+
+			if($Conexion_MySQL){
+			
+				$id_kunde = $_GET['id_kunde']; //this needs to be sanitized 
+
+			}
+			else{
+				die("Error al conectar con la base de datos");
+			}
+
+
+			mysqli_close($Conexion_MySQL);
+
+		 ?>
+
+    	<form action="mitgliedschaftForm.php?id_kunde=<?php echo $id_kunde;?>" method="post">
 		
-		<div class="container">
-			<h1>Kunde</h1> <hr>
-			<table style="width:100%">
-				<tr>
-					<th>&nbsp;id</th>
-					<th>&nbsp;Anrede</th>
-					<th>&nbsp;Name</th>
-					<th>&nbsp;Vorname</th>
-					<th>&nbsp;Geburtsdatum</th>
-					<th>&nbsp;Telefon</th>
-					<th>&nbsp;Stra&szlig;e</th>
-					<th>&nbsp;Hausnummer</th>
-					<th>&nbsp;Ort</th>
-					<th>&nbsp;Email</th>
-					<th>&nbsp;Notiz</th>
-					<th>&nbsp;Editar</th>
-					<th>&nbsp;Eliminar</th>
-				</tr>
-				
-				<?php 
+			<div class="container">
+				<h1>Neue Mitgliedschaft</h1> <hr>
+				<div class="form-group" >
+					<label for="beitritt">Beitritt * :</label><br>
+					<input class="date form-control" type="date" id ="beitritt" required="true" name ="Beitritt">
+							
+				</div>
+				<br>
 
-					$SQL = "select kunde.id, kunde.anrede, kunde.name, kunde.vorname, kunde.geburtsdatum, kunde.telefon, adresse.strasse, adresse.haus_nr, adresse.ort, kunde.email, kunde.notiz from kunde 
-						left join kunde_adresse on kunde.id = kunde_adresse.kunde_id 
-						left join adresse on kunde_adresse.adresse_id = adresse.id";
-					$Resultado = mysqli_query($Conexion_MySQL, $SQL);
+				<div class="form-group" >
+					<label for="austritt">Austritt:</label><br>
+					<input class="date form-control" type="date" value="NULL" id ="austritt" name ="Austritt">
+							
+				</div>
+				<br>
 
-					while($mostrar = mysqli_fetch_array($Resultado)){
-
-
-				 ?>
-
-
-				<tr>
-					
-					<td>&nbsp;<?php echo $mostrar['id'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['anrede'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['name'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['vorname'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['geburtsdatum'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['telefon'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['strasse'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['haus_nr'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['ort'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['email'] ?></td>
-					<td>&nbsp;<?php echo $mostrar['notiz'] ?></td>
-					<td>
-						<a class="btn btn" href="editar.php?id=<?php echo $mostrar['id']; ?>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-					</td>
-
-					<td>
-						<a class="btn btn" href="borrarKunde.php?id=<?php echo $mostrar['id'];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
-					</td>
-				</tr>
-
-				<?php 
-					}
-				 ?>
-			</table>
-
-			<br><br>
-
-			<a href="neuerKunde.php" class="btn btn" role="button" id="nuevo">Neuer Kunde</a>
-		</div>	
-
+				<div class="form-group">
+					<label for="sel2">Zahlungsart:</label>
+				    <select class="form-control" id="sel2" name ="Zahlungsart">
+				    	<option></option>
+				      	<option>Lastschrift</option>
+				        <option>PayPal</option>
+				        <option>Rechnung</option>
+				    </select>
+				</div>
 		
-				
+
+				<br>
+
+
+
+				<input type="submit" class="btn btn" value="Enviar" id="nuevo"> &nbsp;
+				<a href="mitgliedschaft.php" class="btn btn" id="nuevo">Cancelar</a>
+			</div>
+
+			
+				<!--<a class="btn btn-primary" href="adresse.php" id="nuevo">add Adresse</a>-->
+		</form>
+
+	
 
 	    
 	    <footer class="container-fluid text-center">

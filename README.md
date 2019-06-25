@@ -2,14 +2,14 @@
 
 ## Connection to a gym database
 
-![main](https://github.com/fullstacktf/our-present-front/blob/master/src/img/main.jpg)
+![Main Page](https://github.com/fullstacktf/our-present-front/blob/master/img/main.jpg)
 
-![customer](https://github.com/fullstacktf/our-present-front/blob/master/src/img/customer.jpg)
+![Customer](https://github.com/fullstacktf/our-present-front/blob/master/img/customer.jpg)
 
-![newcustomer](https://github.com/fullstacktf/our-present-front/blob/master/src/img/newcustomer.jpg)
+![New Customer](https://github.com/fullstacktf/our-present-front/blob/master/img/newcustomer.jpg)
 
-![address](https://github.com/fullstacktf/our-present-front/blob/master/src/img/address.jpg)
+![Address](https://github.com/fullstacktf/our-present-front/blob/master/img/address.jpg)
 
-![contract](https://github.com/fullstacktf/our-present-front/blob/master/src/img/contract.jpg)
+![Contract](https://github.com/fullstacktf/our-present-front/blob/master/img/contract.jpg)
 
-![practice](https://github.com/fullstacktf/our-present-front/blob/master/src/img/practice.jpg)
+![Practice](https://github.com/fullstacktf/our-present-front/blob/master/img/practice.jpg)
